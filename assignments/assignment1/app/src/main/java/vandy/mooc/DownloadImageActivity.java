@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * An Activity that downloads an image, stores it in a local file on
@@ -27,9 +28,15 @@ public class DownloadImageActivity extends Activity {
         // Always call super class for necessary
         // initialization/implementation.
         // @@ TODO -- you fill in here.
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.download_image_activity);
 
         // Get the URL associated with the Intent data.
         // @@ TODO -- you fill in here.
+        Intent intent = getIntent();
+        Uri url = Uri.parse(intent.getStringExtra("Url"));
+        Log.i(TAG, url.toString());
 
         // Download the image in the background, create an Intent that
         // contains the path to the image file, and set this as the
