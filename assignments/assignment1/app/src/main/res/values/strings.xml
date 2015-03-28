@@ -4,4 +4,6 @@
     <string name="download_image">Download Image</string>
     <string name="defaultURL">http://www.dre.vanderbilt.edu/~schmidt/robot.png</string>
     <string name="enter_url">Enter URL</string>
+    <string name="DownloadImageFailureMessage">Fail to download image.</string>
+    <string name="InvalidUrlFailureMessage">Invalid URL</string>
 </resources>

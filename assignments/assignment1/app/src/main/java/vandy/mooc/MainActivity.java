@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
@@ -41,7 +42,7 @@ public class MainActivity extends LifecycleLoggingActivity {
      * doesn't specify otherwise.
      */
     private Uri mDefaultUrl =
-        Uri.parse("http://www.dre.vanderbilt.edu/~schmidt/robot.png");
+            Uri.parse("http://www.dre.vanderbilt.edu/~schmidt/robot.png");
 
     /**
      * Hook method called when a new instance of Activity is created.
@@ -65,6 +66,7 @@ public class MainActivity extends LifecycleLoggingActivity {
         // (if any).
         // @@ TO-DO -- you fill in here.
         mUrlEditText = (EditText) findViewById(R.id.url);
+        mUrlEditText.setText("http://www.dre.vanderbilt.edu/~schmidt/gifs/dougs-xsmall.jpg");
 
         Button button = (Button) findViewById(R.id.button1);
         button.setOnClickListener(new View.OnClickListener() {
@@ -85,22 +87,21 @@ public class MainActivity extends LifecycleLoggingActivity {
         try {
             // Hide the keyboard.
             hideKeyboard(this,
-                         mUrlEditText.getWindowToken());
+                    mUrlEditText.getWindowToken());
 
             // Call the makeDownloadImageIntent() factory method to
             // create a new Intent to an Activity that can download an
             // image from the URL given by the user.  In this case
             // it's an Intent that's implemented by the
             // DownloadImageActivity.
-            // @@ TODO - you fill in here.
-            Intent intent = new Intent(this, DownloadImageActivity.class);
-            intent.putExtra("Url", getUrl().toString());
+            // @@ TO-DO - you fill in here.
+            Intent intent = makeDownloadImageIntent(getUrl());
 
             // Start the Activity associated with the Intent, which
             // will download the image and then return the Uri for the
             // downloaded image file via the onActivityResult() hook
             // method.
-            // @@ TODO -- you fill in here.
+            // @@ TO-DO -- you fill in here.
             startActivityForResult(intent, DOWNLOAD_IMAGE_REQUEST);
 
         } catch (Exception e) {
@@ -131,20 +132,29 @@ public class MainActivity extends LifecycleLoggingActivity {
                 // by passing in the path to the downloaded image
                 // file.
                 // @@ TODO -- you fill in here.
+                String path = data.getStringExtra("PATH");
+                Intent galleryIntent = makeGalleryIntent(path);
+
+                Toast.makeText(this,
+                        "File location:" + path,
+                        Toast.LENGTH_SHORT).show();
 
                 // Start the Gallery Activity.
                 // @@ TODO -- you fill in here.
+                startActivity(galleryIntent);
             }
         }
         // Check if the started Activity did not complete successfully
         // and inform the user a problem occurred when trying to
         // download contents at the given URL.
-        // @@ TODO -- you fill in here, replacing true with the right
+        // @@ TO-DO -- you fill in here, replacing true with the right
         // code.
         else if (resultCode == RESULT_CANCELED) {
-
+            Toast.makeText(this,
+                    getString(R.string.DownloadImageFailureMessage),
+                    Toast.LENGTH_SHORT).show();
         }
-    }    
+    }
 
     /**
      * Factory method that returns an Intent for viewing the
@@ -153,9 +163,14 @@ public class MainActivity extends LifecycleLoggingActivity {
     private Intent makeGalleryIntent(String pathToImageFile) {
         // Create an intent that will start the Gallery app to view
         // the image.
-    	// TODO -- you fill in here, replacing "null" with the proper
-    	// code.
-        return null;
+        // TODO -- you fill in here, replacing "null" with the proper
+        // code.
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse("file://" + pathToImageFile);
+        intent.setDataAndType(uri, "image/*");
+
+        return intent;
     }
 
     /**
@@ -163,16 +178,19 @@ public class MainActivity extends LifecycleLoggingActivity {
      */
     private Intent makeDownloadImageIntent(Uri url) {
         // Create an intent that will download the image from the web.
-    	// TODO -- you fill in here, replacing "null" with the proper
-    	// code.
-        return null;
+        // TO-DO -- you fill in here, replacing "null" with the proper
+        // code.
+        Intent intent = new Intent(this, DownloadImageActivity.class);
+        intent.putExtra("Url", url.toString());
+
+        return intent;
     }
 
     /**
      * Get the URL to download based on user input.
      */
     protected Uri getUrl() {
-        Uri url = null;
+        Uri url;
 
         // Get the text the user typed in the edit text (if anything).
         url = Uri.parse(mUrlEditText.getText().toString());
@@ -184,16 +202,17 @@ public class MainActivity extends LifecycleLoggingActivity {
 
         // Do a sanity check to ensure the URL is valid, popping up a
         // toast if the URL is invalid.
-        // @@ TODO -- you fill in here, replacing "true" with the
+        // @@ TO-DO -- you fill in here, replacing "true" with the
         // proper code.
-        if (true)
+        boolean legitUrl = Patterns.WEB_URL.matcher(url.toString()).matches();
+        if (legitUrl)
             return url;
         else {
             Toast.makeText(this,
-                           "Invalid URL",
-                           Toast.LENGTH_SHORT).show();
+                    getString(R.string.InvalidUrlFailureMessage),
+                    Toast.LENGTH_SHORT).show();
             return null;
-        } 
+        }
     }
 
     /**
@@ -203,9 +222,9 @@ public class MainActivity extends LifecycleLoggingActivity {
     public void hideKeyboard(Activity activity,
                              IBinder windowToken) {
         InputMethodManager mgr =
-            (InputMethodManager) activity.getSystemService
-            (Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) activity.getSystemService
+                        (Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(windowToken,
-                                    0);
+                0);
     }
 }
