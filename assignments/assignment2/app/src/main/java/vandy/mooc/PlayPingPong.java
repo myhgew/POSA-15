@@ -38,12 +38,14 @@ public class PlayPingPong implements Runnable {
      */
     // @@ TODO - you fill in here.
 
+
     /**
      * Define a CyclicBarrier synchronizer that ensures the
      * HandlerThreads are fully initialized before the ping-pong
      * algorithm begins.
      */
     // @@ TODO - you fill in here.
+
 
     /**
      * Implements the concurrent ping/pong algorithm using a pair of
@@ -74,6 +76,7 @@ public class PlayPingPong implements Runnable {
         public PingPongThread(PingPong myType) {
         	super(myType.toString());
             // @@ TODO - you fill in here.
+            mMyType = myType;
         }
 
         /**
@@ -90,6 +93,7 @@ public class PlayPingPong implements Runnable {
             try {
                 // Wait for both Threads to initialize their Handlers.
                 // @@ TODO - you fill in here.
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
