@@ -37,7 +37,8 @@ public class PlayPingPong implements Runnable {
      * HandlerThreads.
      */
     // @@ TODO - you fill in here.
-
+    private Handler pingHandler;
+    private Handler pongHandler;
 
     /**
      * Define a CyclicBarrier synchronizer that ensures the
@@ -45,7 +46,7 @@ public class PlayPingPong implements Runnable {
      * algorithm begins.
      */
     // @@ TODO - you fill in here.
-
+    private CyclicBarrier barrier;
 
     /**
      * Implements the concurrent ping/pong algorithm using a pair of
@@ -75,7 +76,7 @@ public class PlayPingPong implements Runnable {
          */
         public PingPongThread(PingPong myType) {
         	super(myType.toString());
-            // @@ TODO - you fill in here.
+            // @@ TO-DO - you fill in here.
             mMyType = myType;
         }
 
@@ -89,6 +90,8 @@ public class PlayPingPong implements Runnable {
             // Create the Handler that will service this type of
             // Handler, i.e., either PING or PONG.
             // @@ TODO - you fill in here.
+            pingHandler = new Handler(this);
+            pongHandler = new Handler(this);
 
             try {
                 // Wait for both Threads to initialize their Handlers.
@@ -103,6 +106,8 @@ public class PlayPingPong implements Runnable {
             // Handler is the "obj" to use for the reply and (2)
             // sending the Message to the PING_THREAD's Handler.
             // @@ TODO - you fill in here.
+            mOutputStrategy.print("\nonLooperPrepared: " + mMyType);
+            pingHandler.sendEmptyMessage(0);
         }
 
         /**
@@ -116,6 +121,7 @@ public class PlayPingPong implements Runnable {
             // @@ TODO - you fill in here, replacing "true" with the
             // appropriate code.
             if (true) {
+
             } else {
                 // Shutdown the HandlerThread to the main PingPong
                 // thread can join with it.
@@ -131,6 +137,8 @@ public class PlayPingPong implements Runnable {
             // HandlerThread, which is the "target" of the msg
             // parameter.
             // @@ TODO - you fill in here.
+
+            mOutputStrategy.print("\nhandleMessage: " + mMyType);
 
             return true;
         }
@@ -158,10 +166,14 @@ public class PlayPingPong implements Runnable {
        
         // Create the ping and pong threads.
         // @@ TODO - you fill in here.
+        PingPongThread pingThread = new PingPongThread(PingPong.PING);
+        PingPongThread pongThread = new PingPongThread(PingPong.PONG);
 
         // Start ping and pong threads, which cause their Looper to
         // loop.
         // @@ TODO - you fill in here.
+        pingThread.start();
+        pongThread.start();
 
         // Barrier synchronization to wait for all work to be done
         // before exiting play().
