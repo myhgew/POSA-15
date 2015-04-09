@@ -9,7 +9,7 @@ import android.util.Log;
  * synchronizing on thread completion in the ping-pong application.
  */
 public class OutputStrategy {
-    /** 
+    /**
      * Define a WeakReference to avoid memory leaks.  See
      * www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html
      * for an explanation of why we need this WeakReference.
@@ -22,10 +22,10 @@ public class OutputStrategy {
     public OutputStrategy(final MainActivity activity) {
         // Keep track of the MainActivity.
         mOuterClass =
-            new WeakReference<MainActivity> (activity);
+                new WeakReference<MainActivity>(activity);
     }
 
-    /** 
+    /**
      * Output the string from a background thread to the Android
      * display managed by the UI thread.
      */
