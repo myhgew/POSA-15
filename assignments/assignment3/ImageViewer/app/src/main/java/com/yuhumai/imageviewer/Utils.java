@@ -1,4 +1,4 @@
-package vandy.mooc;
+package com.yuhumai.imageviewer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +42,7 @@ public class Utils {
      * The resource that we write to the file system in offline
      * mode. 
      */
-    static final int OFFLINE_TEST_IMAGE = R.raw.dougs;
+    static final int OFFLINE_TEST_IMAGE = 0; // R.raw.dougs;
 
     /**
      * The file name that we should use to store the image in offline
